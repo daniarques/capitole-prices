@@ -21,6 +21,7 @@ public class PricesService {
 
 		return pricesInApplicationDate.stream()
 			.max(Comparator.comparingInt(PricesEntity::getPriority))
+			// TODO: 04/09/2023  Exception handling
 			.orElseThrow(() -> new RuntimeException("Not found"));
 	}
 }
