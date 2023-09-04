@@ -1,4 +1,4 @@
-package com.daniarques.capitoleprices.domain.entity;
+package com.daniarques.capitoleprices.adapters.database.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EmbeddedId;

@@ -1,4 +1,4 @@
-package com.daniarques.capitoleprices.domain.entity;
+package com.daniarques.capitoleprices.adapters.database.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
