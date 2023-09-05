@@ -4,12 +4,20 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.Digits;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
+@Getter
+@Setter
+@EqualsAndHashCode
+@Embeddable
 public class PriceIdEntity {
 
 	@Column(name = "BRAND_ID")
