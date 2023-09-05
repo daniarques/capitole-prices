@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface PricesRepositoryJPAImpl extends PricesRepository, JpaRepository<PriceEntity, PriceIdEntity> {
 
 	@Query("""
-		SELECT p FROM PricesEntity p 
+		SELECT p FROM PriceEntity p 
 		WHERE p.id.productId = :productId 
 		AND p.id.brandId = :brandId 
 		AND p.id.startDate <= :applicationDate 
