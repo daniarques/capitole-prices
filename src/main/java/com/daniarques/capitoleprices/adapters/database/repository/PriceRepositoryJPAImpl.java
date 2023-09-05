@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PricesRepositoryJPAImpl extends PricesRepository, JpaRepository<PriceEntity, PriceIdEntity> {
+public interface PriceRepositoryJPAImpl extends PriceRepository, JpaRepository<PriceEntity, PriceIdEntity> {
 
 	@Query("""
 		SELECT p FROM PriceEntity p 

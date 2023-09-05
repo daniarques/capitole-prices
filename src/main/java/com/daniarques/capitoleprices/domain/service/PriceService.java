@@ -1,7 +1,7 @@
 package com.daniarques.capitoleprices.domain.service;
 
 import com.daniarques.capitoleprices.adapters.database.entity.PriceEntity;
-import com.daniarques.capitoleprices.adapters.database.repository.PricesRepository;
+import com.daniarques.capitoleprices.adapters.database.repository.PriceRepository;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PricesService {
+public class PriceService {
 
-	private final PricesRepository pricesRepository;
+	private final PriceRepository priceRepository;
 
 	public PriceEntity getPriceByProductIdBrandIdAndDate(Integer productId, Integer brandId, LocalDateTime applicationDate) {
 
 		List<PriceEntity> pricesInApplicationDate =
-			pricesRepository.findPricesByProductIdBrandIdAndDate(productId, brandId, applicationDate);
+			priceRepository.findPricesByProductIdBrandIdAndDate(productId, brandId, applicationDate);
 
 		return pricesInApplicationDate.stream()
 			.max(Comparator.comparingInt(PriceEntity::getPriority))

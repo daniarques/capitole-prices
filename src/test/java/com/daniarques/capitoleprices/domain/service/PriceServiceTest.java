@@ -7,7 +7,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.daniarques.capitoleprices.adapters.database.entity.PriceEntity;
 import com.daniarques.capitoleprices.adapters.database.entity.PriceIdEntity;
-import com.daniarques.capitoleprices.adapters.database.repository.PricesRepository;
+import com.daniarques.capitoleprices.adapters.database.repository.PriceRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class PricesServiceTest {
+class PriceServiceTest {
 
 	private static final int PRODUCT_ID = 123;
 	private static final int BRAND_ID = 11;
@@ -28,10 +28,10 @@ class PricesServiceTest {
 	private static final int HIGH_PRIORITY = Integer.MAX_VALUE;
 
 	@Mock
-	private PricesRepository pricesRepository;
+	private PriceRepository priceRepository;
 
 	@InjectMocks
-	private PricesService pricesService;
+	private PriceService priceService;
 
 	private final PriceIdEntity priceId = PriceIdEntity.builder()
 		.productId(PRODUCT_ID1)
@@ -51,31 +51,31 @@ class PricesServiceTest {
 
 	@Test
 	void getPriceByProductIdBrandIdAndDate_noPricesFound() {
-		given(pricesRepository.findPricesByProductIdBrandIdAndDate(PRODUCT_ID, BRAND_ID, APPLICATION_DATE))
+		given(priceRepository.findPricesByProductIdBrandIdAndDate(PRODUCT_ID, BRAND_ID, APPLICATION_DATE))
 			.willReturn(emptyList());
 
 		assertThrows(RuntimeException.class,
-					 () -> pricesService.getPriceByProductIdBrandIdAndDate(PRODUCT_ID, BRAND_ID, APPLICATION_DATE));
+					 () -> priceService.getPriceByProductIdBrandIdAndDate(PRODUCT_ID, BRAND_ID, APPLICATION_DATE));
 	}
 
 	@Test
 	void getPriceByProductIdBrandIdAndDate_onePriceFound() {
-		given(pricesRepository.findPricesByProductIdBrandIdAndDate(PRODUCT_ID, BRAND_ID, APPLICATION_DATE))
+		given(priceRepository.findPricesByProductIdBrandIdAndDate(PRODUCT_ID, BRAND_ID, APPLICATION_DATE))
 			.willReturn(List.of(price));
 
 		PriceEntity actual =
-			pricesService.getPriceByProductIdBrandIdAndDate(PRODUCT_ID, BRAND_ID, APPLICATION_DATE);
+			priceService.getPriceByProductIdBrandIdAndDate(PRODUCT_ID, BRAND_ID, APPLICATION_DATE);
 
 		assertEquals(price, actual);
 	}
 
 	@Test
 	void getPriceByProductIdBrandIdAndDate_twoPricesFound() {
-		given(pricesRepository.findPricesByProductIdBrandIdAndDate(PRODUCT_ID, BRAND_ID, APPLICATION_DATE))
+		given(priceRepository.findPricesByProductIdBrandIdAndDate(PRODUCT_ID, BRAND_ID, APPLICATION_DATE))
 			.willReturn(List.of(price, price_highPriority));
 
 		PriceEntity actual =
-			pricesService.getPriceByProductIdBrandIdAndDate(PRODUCT_ID, BRAND_ID, APPLICATION_DATE);
+			priceService.getPriceByProductIdBrandIdAndDate(PRODUCT_ID, BRAND_ID, APPLICATION_DATE);
 
 		assertEquals(price_highPriority, actual);
 	}
