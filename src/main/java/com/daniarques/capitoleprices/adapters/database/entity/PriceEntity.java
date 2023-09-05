@@ -8,15 +8,17 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Digits;
 import java.math.BigDecimal;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Table(name = "PRICES")
 @Entity
-public class PricesEntity {
+@Builder
+public class PriceEntity {
 
 	@EmbeddedId
-	PricesIdEntity id;
+	PriceIdEntity id;
 
 	@Column(name = "PRICE_LIST")
 	@Digits(integer = 8, fraction = 0)

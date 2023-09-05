@@ -4,11 +4,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.validation.constraints.Digits;
 import java.time.LocalDateTime;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Embeddable
-public class PricesIdEntity {
+@Builder
+public class PriceIdEntity {
 
 	@Column(name = "BRAND_ID")
 	@Digits(integer = 8, fraction = 0)
