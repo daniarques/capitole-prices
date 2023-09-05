@@ -18,6 +18,7 @@ public class PriceService {
 
 	private static final String PRICE_NOT_FOUND_MESSAGE_FORMAT =
 		"Price with productId:{}, brandId:{} and applicationDate:{} not found";
+
 	private final PriceRepository priceRepository;
 
 	public PriceEntity getPriceByProductIdBrandIdAndDate(Integer productId, Integer brandId, LocalDateTime applicationDate) {
@@ -25,6 +26,13 @@ public class PriceService {
 		List<PriceEntity> pricesInApplicationDate =
 			priceRepository.findPricesByProductIdBrandIdAndDate(productId, brandId, applicationDate);
 
+		return getPriceByMaxPriority(productId, brandId, applicationDate, pricesInApplicationDate);
+	}
+
+	private PriceEntity getPriceByMaxPriority(Integer productId,
+											  Integer brandId,
+											  LocalDateTime applicationDate,
+											  List<PriceEntity> pricesInApplicationDate) {
 		return pricesInApplicationDate.stream()
 			.max(Comparator.comparingInt(PriceEntity::getPriority))
 			.orElseThrow(() -> buildResourceNotFoundException(productId, brandId, applicationDate));
@@ -36,7 +44,7 @@ public class PriceService {
 		log.info(PRICE_NOT_FOUND_MESSAGE_FORMAT, productId, brandId, applicationDate);
 
 		String notFoundMessage =
-			MessageFormatter.arrayFormat(PRICE_NOT_FOUND_MESSAGE_FORMAT, List.of(productId, brandId, applicationDate).toArray())
+			MessageFormatter.arrayFormat(PRICE_NOT_FOUND_MESSAGE_FORMAT, new Object[]{productId, brandId, applicationDate})
 				.getMessage();
 		return new ResourceNotFoundException(notFoundMessage);
 	}
