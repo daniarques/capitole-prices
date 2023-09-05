@@ -1,13 +1,14 @@
 package com.daniarques.capitoleprices.domain.service;
 
 import static java.util.Collections.emptyList;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 import com.daniarques.capitoleprices.adapters.database.entity.PriceEntity;
 import com.daniarques.capitoleprices.adapters.database.entity.PriceIdEntity;
 import com.daniarques.capitoleprices.adapters.database.repository.PriceRepository;
+import com.daniarques.capitoleprices.domain.service.error.ResourceNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.junit.jupiter.api.Test;
@@ -54,8 +55,9 @@ class PriceServiceTest {
 		given(priceRepository.findPricesByProductIdBrandIdAndDate(PRODUCT_ID, BRAND_ID, APPLICATION_DATE))
 			.willReturn(emptyList());
 
-		assertThrows(RuntimeException.class,
-					 () -> priceService.getPriceByProductIdBrandIdAndDate(PRODUCT_ID, BRAND_ID, APPLICATION_DATE));
+		assertThatThrownBy(() -> priceService.getPriceByProductIdBrandIdAndDate(PRODUCT_ID, BRAND_ID, APPLICATION_DATE))
+			.isInstanceOf(ResourceNotFoundException.class)
+			.hasMessage("Price with productId:123, brandId:11 and applicationDate:1996-12-11T10:00 not found");
 	}
 
 	@Test
