@@ -1,20 +1,25 @@
 package com.daniarques.capitoleprices.adapters.api;
 
+import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.daniarques.capitoleprices.adapters.database.entity.Currency;
 import com.daniarques.capitoleprices.adapters.database.entity.PriceEntity;
 import com.daniarques.capitoleprices.adapters.database.entity.PriceIdEntity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PriceControllerTest {
 
+	@LocalServerPort
+	private int port;
 
 	@Autowired
 	private PriceController priceController;
@@ -70,9 +75,19 @@ class PriceControllerTest {
 
 	@Test
 	void getPriceByProductIdBrandIdAndDate_noPriceFound() {
-		// TODO: 05/09/2023 Change exception
-		assertThrows(RuntimeException.class,
-					 () -> priceController.getPriceByProductIdBrandIdAndDate(0, 0, LocalDateTime.MIN));
+		String errorMessage = given()
+			.port(port)
+			.queryParam("productId", 123)
+			.queryParam("brandId", 11)
+			.queryParam("applicationDate", LocalDateTime.of(1996, 12, 11, 10, 0)
+				.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
+			.when()
+			.get("/prices")
+			.then().assertThat().statusCode(HttpStatus.NOT_FOUND.value())
+			.extract().asString();
+
+		assertEquals("Price with productId:123, brandId:11 and applicationDate:1996-12-11T10:00 not found", errorMessage);
+
 	}
 
 	// -          Test 1: petición a las 10:00 del día 14 del producto 35455   para la brand 1 (ZARA)
